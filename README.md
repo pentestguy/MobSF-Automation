@@ -13,5 +13,5 @@ Before running the script, ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone <repository_url>
+   git clone <https://github.com/pentestguy/MobSF-Automation.git>
    cd mob-sf-automation
