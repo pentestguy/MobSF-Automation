@@ -15,3 +15,11 @@ Before running the script, ensure you have the following installed:
    ```bash
    git clone https://github.com/pentestguy/MobSF-Automation.git
    cd mob-sf-automation
+
+2. Build the Docker image:
+   ```bash
+   docker build -t MOBSF-Automation
+
+3. Run
+   ```bash
+   docker run --rm -v ${PWD}:/app -v ${PWD}/output:/output MOBSF-Automation /app/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
