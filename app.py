@@ -3,10 +3,6 @@ import requests
 import json
 import os
 
-def load_config(config_path):
-    with open(config_path, 'r') as config_file:
-        return json.load(config_file)
-
 def upload_file(api_url, api_key, file_path):
     upload_url = f"{api_url}/upload"
     headers = {'Authorization': api_key}
@@ -17,7 +13,7 @@ def upload_file(api_url, api_key, file_path):
             files = {'file': (file_name, file, 'application/vnd.android.package-archive')}
             response = requests.post(upload_url, headers=headers, files=files)
             response.raise_for_status()
-        return response.json().get('hash')
+            return response.json().get('hash')
     except requests.exceptions.RequestException as e:
         print(f"Error uploading file: {e}")
         return None
@@ -77,10 +73,8 @@ def save_json_report(report, output_dir, filename='mob_sf_report.json'):
         print(f"Error saving JSON report: {e}")
 
 def main(file_path, api_key, api_url):
-    if not api_url or not api_key:
-        print("API URL or API Key missing.")
-        return
-
+    output_dir = os.path.join(os.path.dirname(file_path), 'output')
+    
     file_hash = upload_file(api_url, api_key, file_path)
     if file_hash:
         print(f"File uploaded successfully. Hash: {file_hash}")
@@ -88,8 +82,8 @@ def main(file_path, api_key, api_url):
             print("Scan triggered successfully.")
             report = fetch_report(api_url, api_key, file_hash)
             if report:
-                save_json_report(report, '/output')
-                download_pdf_report(api_url, api_key, file_hash, '/output')
+                save_json_report(report, output_dir)
+                download_pdf_report(api_url, api_key, file_hash, output_dir)
             else:
                 print("Failed to fetch JSON report.")
         else:
