@@ -25,9 +25,9 @@ Before running the script, ensure you have the following installed:
 
 3. Run
    ```bash
-   docker run --rm -v ${PWD}:/app -v ${PWD}/output:/output mobsf-automation /app/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+   docker run --rm -v ${PWD}:/app mobsf-automation /app/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
 
 ## Use PreBuilt Docker Image
 
    ```bash
-   docker run --rm -v ${PWD}:/app -v ${PWD}/output:/output p3nt3stguy/mobsf-automation:latest /app/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+   docker run --rm -v ${PWD}:/app p3nt3stguy/mobsf-automation:latest /app/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
