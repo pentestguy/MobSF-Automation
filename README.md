@@ -31,3 +31,11 @@ Before running the script, ensure you have the following installed:
 
    ```bash
    docker run --rm -v ${PWD}:/apk -v ${PWD}/output:/output p3nt3stguy/mobsf-automation:latest /apk/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+
+## RoadMap
+
+    [ ] Add Pipeline YAML file
+    [ ] Add Dynamic Analysis for Android Application
+    [ ] Add Dynamic Analysis for iOS Application
+    
+    
