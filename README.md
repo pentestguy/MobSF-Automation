@@ -11,31 +11,38 @@ Before running the script, ensure you have the following installed:
 - Pull and Run MobSF
   ```bash
   docker run -it --rm -p 8000:8000 opensecurity/mobile-security-framework-mobsf:latest
+  ```
 
 ## Setup
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/pentestguy/MobSF-Automation.git
    cd mob-sf-automation
 
+   ```
+
 2. Build the Docker image:
+
    ```bash
    docker build -t mobsf-automation
+
+   ```
 
 3. Run
    ```bash
    docker run --rm -v ${PWD}:/apk -v ${PWD}/output:/output mobsf-automation /apk/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+   ```
 
 ## Use PreBuilt Docker Image
 
-   ```bash
-   docker run --rm -v ${PWD}:/apk -v ${PWD}/output:/output p3nt3stguy/mobsf-automation:latest /apk/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+```bash
+docker run --rm -v ${PWD}:/apk -v ${PWD}/output:/output p3nt3stguy/mobsf-automation:latest /apk/your_app.apk --api-key YOUR_API_KEY --api-url YOUR_API_URL
+```
 
 ## RoadMap
 
-    [ ] Add Pipeline YAML file
-    [ ] Add Dynamic Analysis for Android Application
-    [ ] Add Dynamic Analysis for iOS Application
-    
-    
+ [ ] Add Pipeline YAML file
+ [ ] Add Dynamic Analysis for Android Application
+ [ ] Add Dynamic Analysis for iOS Application
