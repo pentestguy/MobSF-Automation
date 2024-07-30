@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  name: Self-hosted
+
+steps:
+- task: Docker@2
+  displayName: 'Run MOBSF-Automation'
+  inputs:
+    command: 'run'
+    arguments: '--rm -v $(System.DefaultWorkingDirectory):/apk -v $(System.DefaultWorkingDirectory)/output:/output p3nt3stguy/mobsf-automation:latest /apk/DivaApplication.apk --api-key $(apikey) --api-url $(url)'
+
+- task: PublishPipelineArtifact@1
+  displayName: 'Publish output artifacts'
+  inputs:
+    targetPath: '$(System.DefaultWorkingDirectory)/output'
+    artifactName: 'MobSF-Reports'
