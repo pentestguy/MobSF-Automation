@@ -23,4 +23,4 @@ jobs:
       - name: Build and Push
         run: |
           docker buildx build --push --platform linux/amd64 \
-            -t p3nt3stguy/mobsf-automation:${GITHUB_SHA} .
+            -t p3nt3stguy/mobsf-automation:latest .
