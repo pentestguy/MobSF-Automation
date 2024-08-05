@@ -76,7 +76,45 @@ def save_json_report(report, output_dir, filename='mob_sf_report.json'):
     except IOError as e:
         print(f"Error saving JSON report: {e}")
 
-def main(file_path, api_key, api_url):
+def get_apps(api_url, api_key):
+    url = f"{api_url}/dynamic/get_apps"
+    headers = {'Authorization': api_key}
+    
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error getting apps: {e}")
+        return None
+
+def start_dynamic_analysis(api_url, api_key, file_hash):
+    url = f"{api_url}/dynamic/start_analysis"
+    headers = {'Authorization': api_key}
+    data = {'hash': file_hash}
+    
+    try:
+        response = requests.post(url, headers=headers, data=data)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error starting dynamic analysis: {e}")
+        return None
+
+def stop_dynamic_analysis(api_url, api_key, file_hash):
+    url = f"{api_url}/dynamic/stop_analysis"
+    headers = {'Authorization': api_key}
+    data = {'hash': file_hash}
+    
+    try:
+        response = requests.post(url, headers=headers, data=data)
+        response.raise_for_status()
+        return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error stopping dynamic analysis: {e}")
+        return None
+
+def main(file_path, api_key, api_url, analysis_type):
     if not api_url or not api_key:
         print("API URL or API Key missing.")
         return
@@ -84,16 +122,35 @@ def main(file_path, api_key, api_url):
     file_hash = upload_file(api_url, api_key, file_path)
     if file_hash:
         print(f"File uploaded successfully. Hash: {file_hash}")
-        if trigger_scan(api_url, api_key, file_hash):
-            print("Scan triggered successfully.")
-            report = fetch_report(api_url, api_key, file_hash)
-            if report:
-                save_json_report(report, '/output')
-                download_pdf_report(api_url, api_key, file_hash, '/output')
+
+        if analysis_type in ['static', 'both']:
+            if trigger_scan(api_url, api_key, file_hash):
+                print("Static scan triggered successfully.")
+                report = fetch_report(api_url, api_key, file_hash)
+                if report:
+                    save_json_report(report, '/output')
+                    download_pdf_report(api_url, api_key, file_hash, '/output')
+                else:
+                    print("Failed to fetch JSON report.")
             else:
-                print("Failed to fetch JSON report.")
-        else:
-            print("Failed to trigger scan.")
+                print("Failed to trigger static scan.")
+
+        if analysis_type in ['dynamic', 'both']:
+            apps = get_apps(api_url, api_key)
+            if apps:
+                print("Apps retrieved successfully.")
+                dynamic_result = start_dynamic_analysis(api_url, api_key, file_hash)
+                if dynamic_result:
+                    print("Dynamic analysis started successfully.")
+                    stop_result = stop_dynamic_analysis(api_url, api_key, file_hash)
+                    if stop_result:
+                        print("Dynamic analysis stopped successfully.")
+                    else:
+                        print("Failed to stop dynamic analysis.")
+                else:
+                    print("Failed to start dynamic analysis.")
+            else:
+                print("Failed to retrieve apps.")
     else:
         print("Failed to upload file.")
 
@@ -102,5 +159,6 @@ if __name__ == '__main__':
     parser.add_argument('file', type=str, help='Path to the APK file (located in /apk directory)')
     parser.add_argument('--api-key', required=True, type=str, help='API Key for accessing the MobSF API')
     parser.add_argument('--api-url', required=True, type=str, help='URL of the MobSF API')
+    parser.add_argument('--analysis-type', choices=['static', 'dynamic', 'both'], default='both', help='Type of analysis to perform')
     args = parser.parse_args()
-    main(args.file, args.api_key, args.api_url)
+    main(args.file, args.api_key, args.api_url, args.analysis_type)
