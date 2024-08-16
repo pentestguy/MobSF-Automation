@@ -43,6 +43,6 @@ docker run --rm -v ${PWD}:/apk -v ${PWD}/output:/output p3nt3stguy/mobsf-automat
 
 ## RoadMap
 
- [ ] Add Pipeline YAML file
- [ ] Add Dynamic Analysis for Android Application
- [ ] Add Dynamic Analysis for iOS Application
+- [X] Add Pipeline YAML file
+- [ ] Add Dynamic Analysis for Android Application
+- [ ] Add Dynamic Analysis for iOS Application
