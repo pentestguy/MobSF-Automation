@@ -14,7 +14,7 @@ def upload_file(api_url, api_key, file_path):
     
     try:
         with open(file_path, 'rb') as file:
-            files = {'file': (file_name, file, 'application/vnd.android.package-archive')}
+            files = {'file': (file_name, file, 'application/octet-stream')}
             response = requests.post(upload_url, headers=headers, files=files)
             response.raise_for_status()
         return response.json().get('hash')
